@@ -27,7 +27,7 @@
             </form>
         </td>
         <td>
-            <form style="display:inline;" th:method="DELETE" th:action="@{/users/delete}">
+            <form style="display:inline;" th:method="POST" th:action="@{/users/delete}">
                 <input type="hidden" name="id" th:value="${user.id}" class="form-control"/>
                 <button type="submit" class="btn btn-success">Delete</button>
             </form>
