@@ -21,13 +21,13 @@
         <td th:text="${user.name}"></td>
         <td th:text="${user.mail}"></td>
         <td>
-            <form style="display:inline;" th:method="GET" th:action="@{/users/edit}">
+            <form style="display:inline;" th:method="GET" th:action="@{/edit}">
                 <input type="hidden" name="id" th:value="${user.id}" class="form-control"/>
                 <button type="submit" class="btn btn-success">Edit</button>
             </form>
         </td>
         <td>
-            <form style="display:inline;" th:method="POST" th:action="@{/users/delete}">
+            <form style="display:inline;" th:method="POST" th:action="@{/delete}">
                 <input type="hidden" name="id" th:value="${user.id}" class="form-control"/>
                 <button type="submit" class="btn btn-success">Delete</button>
             </form>
@@ -37,8 +37,11 @@
 </table>
 <hr/>
 <br/>
-<form th:method="GET" th:action="@{/users/new}">
+<form style="display:inline;" th:method="GET" th:action="@{/new}">
     <input type="submit" value="Create new user"/>
+</form>
+<form style="display:inline;" th:method="GET" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
 </form>
 </body>
 </html>

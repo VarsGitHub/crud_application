@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User info</title>
+</head>
+<body>
+<table border="1">
+  <thead>
+  <tr>
+    <th> ID</th>
+    <th> Name</th>
+    <th> Mail</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td th:text="${user.id}"></td>
+    <td th:text="${user.name}"></td>
+    <td th:text="${user.mail}"></td>
+  </tr>
+  </tbody>
+</table>
+<form th:method="GET" th:action="@{/logout}">
+  <input type="submit" value="Logout"/>
+</form>
+</body>
+</html>

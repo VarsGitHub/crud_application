@@ -8,7 +8,7 @@ public class AnnotationConfigDispatcherServletInitializer extends AbstractAnnota
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
-                HibernateConfig.class
+                HibernateConfig.class, SecurityConfig.class, WebConfig.class
         };
     }
 

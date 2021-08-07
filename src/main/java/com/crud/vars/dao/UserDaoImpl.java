@@ -1,11 +1,14 @@
 package com.crud.vars.dao;
 
+import com.crud.vars.model.Role;
 import com.crud.vars.model.User;
+import com.crud.vars.model.UserDTO;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -22,6 +25,14 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User show(int id) {
         return entityManager.find(User.class, id);
+    }
+
+    @Override
+    public User findUserByName(String s) {
+        Query query = entityManager.createQuery("SELECT a FROM User a WHERE a.name = :name", User.class);
+        query.setParameter("name", s);
+        User result = (User) query.getSingleResult();
+        return result;
     }
 
     @Override
@@ -43,5 +54,15 @@ public class UserDaoImpl implements UserDao {
     @Transactional
     public void delete(int id) {
         entityManager.remove(entityManager.find(User.class, id));
+    }
+
+    @Override
+    public void setAdminRole(UserDTO user) {
+        user.setRole(entityManager.find(Role.class, 1));
+    }
+
+    @Override
+    public void setUserRole(UserDTO user) {
+        user.setRole(entityManager.find(Role.class, 2));
     }
 }

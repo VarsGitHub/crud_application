@@ -2,6 +2,9 @@ package com.crud.vars.service;
 
 import com.crud.vars.dao.UserDao;
 import com.crud.vars.model.User;
+import com.crud.vars.model.UserDTO;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,17 +29,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) {
-        userDao.save(user);
+    public void save(UserDTO user) {
+        User newUser = new User();
+        newUser.setName(user.getName());
+        newUser.setPassword(user.getPassword());
+        newUser.setMail(user.getMail());
+        newUser.setRoles(user.getRoles());
+        userDao.save(newUser);
     }
 
     @Override
-    public void update(int id, User user) {
-        userDao.update(id, user);
+    public void update(int id, UserDTO user) {
+        User newUser = new User();
+        newUser.setName(user.getName());
+        newUser.setPassword(user.getPassword());
+        newUser.setMail(user.getMail());
+        newUser.setRoles(user.getRoles());
+        userDao.update(id, newUser);
     }
 
     @Override
     public void delete(int id) {
         userDao.delete(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return userDao.findUserByName(s);
+    }
+
+    @Override
+    public void setAdminRole(UserDTO user) {
+        userDao.setAdminRole(user);
+    }
+
+    @Override
+    public void setUserRole(UserDTO user) {
+        userDao.setUserRole(user);
     }
 }
