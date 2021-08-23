@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .loginPage("/users/login")
 //                //указываем логику обработки при логине
                 .successHandler(new LoginSuccessHandler())
+                .usernameParameter("mail")
 //                // указываем action с формы логина
 //                .loginProcessingUrl("/login")
 //                // Указываем параметры логина и пароля с формы логина

@@ -28,9 +28,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findUserByName(String s) {
-        Query query = entityManager.createQuery("SELECT a FROM User a WHERE a.name = :name", User.class);
-        query.setParameter("name", s);
+    public User findUserByMail(String s) {
+        Query query = entityManager.createQuery("SELECT a FROM User a WHERE a.mail = :mail", User.class);
+        query.setParameter("mail", s);
         User result = (User) query.getSingleResult();
         return result;
     }
@@ -47,6 +47,7 @@ public class UserDaoImpl implements UserDao {
         User userToUpdate = entityManager.find(User.class, id);
         userToUpdate.setName(user.getName());
         userToUpdate.setMail(user.getMail());
+        userToUpdate.setPassword(user.getPassword());
         entityManager.persist(userToUpdate);
     }
 

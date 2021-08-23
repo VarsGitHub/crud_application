@@ -35,7 +35,7 @@ public class StartupInitializer implements ApplicationListener<ContextRefreshedE
         User userAdmin = new User();
         userAdmin.setName("1");
         userAdmin.setPassword("1");
-        userAdmin.setMail("admin@admin.ru");
+        userAdmin.setMail("1");
         userAdmin.getRoles().add(adminRole);
         entityManager.persist(userAdmin);
 

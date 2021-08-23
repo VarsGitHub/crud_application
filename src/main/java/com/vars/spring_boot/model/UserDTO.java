@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UserDTO {
+    private int id;
     private String name;
     private String password;
     private String mail;
@@ -16,6 +17,14 @@ public class UserDTO {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setRole(Role role) {
@@ -34,11 +43,11 @@ public class UserDTO {
         return mail;
     }
 
-    public boolean getAdmin(){
+    public boolean getAdmin() {
         return admin;
     }
 
-    public void setAdmin(boolean admin){
+    public void setAdmin(boolean admin) {
         this.admin = admin;
     }
 

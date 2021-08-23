@@ -23,6 +23,7 @@ public class UsersController {
     @GetMapping("/admin")
     public String index(Model model) {
         model.addAttribute("users", userService.getUsers());
+        model.addAttribute("user", new UserDTO());
         return "index";
     }
 
@@ -55,11 +56,17 @@ public class UsersController {
         return "edit";
     }
 
-    @PostMapping("/{id}")
-    public String update(@ModelAttribute("user") UserDTO user, @PathVariable("id") int id) {
-        userService.update(id, user);
+    @PostMapping("/edit")
+    public String edit(@ModelAttribute("user") UserDTO user) {
+        userService.update(user.getId(), user);
         return "redirect:/admin";
     }
+
+//    @PostMapping("/{id}")
+//    public String update(@ModelAttribute("user") UserDTO user, @PathVariable("id") int id) {
+//        userService.update(id, user);
+//        return "redirect:/admin";
+//    }
 
     @PostMapping("/delete")
     public String delete(@RequestParam(value = "id") int id) {

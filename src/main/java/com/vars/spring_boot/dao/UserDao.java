@@ -10,7 +10,7 @@ public interface UserDao {
 
     User show(int id);
 
-    User findUserByName (String s);
+    User findUserByMail (String s);
 
     void save(User user);
 
