@@ -1,28 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>User info</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>info</title>
 </head>
 <body>
-<table border="1">
-  <thead>
-  <tr>
-    <th> ID</th>
-    <th> Name</th>
-    <th> Mail</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td th:text="${user.id}"></td>
-    <td th:text="${user.name}"></td>
-    <td th:text="${user.mail}"></td>
-  </tr>
-  </tbody>
-</table>
-<form th:method="GET" th:action="@{/logout}">
-  <input type="submit" value="Logout"/>
-</form>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="navbar-brand">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <b><a class="text-white" sec:authentication="name"></a></b>
+                <a class="text-white">with roles:</a>
+                <a class="text-white" sec:authentication="authorities"></a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-lg-2">
+            <ul class="nav flex-column nav-pills" id="myTab1" role="tablist" aria-orientation="vertical">
+                <li class="nav-item">
+                    <a class="nav-link show active" id="user-tab" data-toggle="tab" href="#user" role="tab"
+                       aria-controls="user" aria-selected="false">User</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-10">
+            <div class="tab-content" id="navTabContent">
+                <div class="tab-pane show active" id="user" role="tabpanel" aria-labelledby="user-tab">
+                    <h1 class="h1"><b>User page info</b></h1>
+                    <div class="card">
+                        <h5 class="card-header"><b>About user</b></h5>
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Mail</th>
+                                        <th scope="col">Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${authInfo.id}"></td>
+                                        <td th:text="${authInfo.name}"></td>
+                                        <td th:text="${authInfo.mail}"></td>
+                                        <td><span th:each="role : ${authInfo.roles}">
+                                                <span th:text="${role.role}"></span>
+                                                </span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

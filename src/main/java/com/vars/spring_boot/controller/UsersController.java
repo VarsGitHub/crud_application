@@ -21,7 +21,10 @@ public class UsersController {
     }
 
     @GetMapping("/admin")
-    public String index(Model model) {
+    public String index(Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        User authenticatedUser = (User) userService.loadUserByUsername(principal.getName());
+        model.addAttribute("authInfo", authenticatedUser);
         model.addAttribute("users", userService.getUsers());
         model.addAttribute("user", new UserDTO());
         return "index";
@@ -31,13 +34,8 @@ public class UsersController {
     public String user(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         User authenticatedUser = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", authenticatedUser);
+        model.addAttribute("authInfo", authenticatedUser);
         return "user";
-    }
-
-    @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") UserDTO user) {
-        return "new";
     }
 
     @PostMapping("/admin")
@@ -50,27 +48,15 @@ public class UsersController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/edit")
-    public String edit(@RequestParam(value = "id") int id, Model model) {
-        model.addAttribute("user", userService.show(id));
-        return "edit";
-    }
-
     @PostMapping("/edit")
     public String edit(@ModelAttribute("user") UserDTO user) {
         userService.update(user.getId(), user);
         return "redirect:/admin";
     }
 
-//    @PostMapping("/{id}")
-//    public String update(@ModelAttribute("user") UserDTO user, @PathVariable("id") int id) {
-//        userService.update(id, user);
-//        return "redirect:/admin";
-//    }
-
     @PostMapping("/delete")
-    public String delete(@RequestParam(value = "id") int id) {
-        userService.delete(id);
+    public String delete(@ModelAttribute("user") UserDTO user) {
+        userService.delete(user.getId());
         return "redirect:/admin";
     }
 
