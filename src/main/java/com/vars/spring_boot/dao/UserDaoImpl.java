@@ -6,6 +6,7 @@ import com.vars.spring_boot.model.UserDTO;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -29,8 +30,10 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByMail(String s) {
+        EntityGraph<?> entityGraph = entityManager.getEntityGraph("User.roles");
         Query query = entityManager.createQuery("SELECT a FROM User a WHERE a.mail = :mail", User.class);
         query.setParameter("mail", s);
+        query.setHint("javax.persistence.fetchgraph", entityGraph);
         User result = (User) query.getSingleResult();
         return result;
     }

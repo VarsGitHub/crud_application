@@ -23,9 +23,9 @@ public class UsersController {
     @GetMapping("/admin")
     public String index(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
+        model.addAttribute("users", userService.getUsers());
         User authenticatedUser = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("authInfo", authenticatedUser);
-        model.addAttribute("users", userService.getUsers());
         model.addAttribute("user", new UserDTO());
         return "index";
     }
