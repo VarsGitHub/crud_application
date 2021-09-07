@@ -27,8 +27,8 @@ public class StartupInitializer implements ApplicationListener<ContextRefreshedE
 
         User userFloppa = new User();
         userFloppa.setName("Floppa");
-        userFloppa.setPassword("floppapass");
-        userFloppa.setMail("FloppaBased@russiancat.ru");
+        userFloppa.setPassword("2");
+        userFloppa.setMail("2");
         userFloppa.getRoles().add(userRole);
         entityManager.persist(userFloppa);
 
@@ -37,6 +37,7 @@ public class StartupInitializer implements ApplicationListener<ContextRefreshedE
         userAdmin.setPassword("1");
         userAdmin.setMail("1");
         userAdmin.getRoles().add(adminRole);
+        userAdmin.getRoles().add(userRole);
         entityManager.persist(userAdmin);
 
         User userBoss = new User();

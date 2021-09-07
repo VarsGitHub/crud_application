@@ -1,70 +1,82 @@
 package com.vars.spring_boot.service;
 
-import com.vars.spring_boot.dao.UserDao;
+import com.vars.spring_boot.dao.RoleRepository;
+import com.vars.spring_boot.dao.UserRepository;
+import com.vars.spring_boot.model.Role;
 import com.vars.spring_boot.model.User;
-import com.vars.spring_boot.model.UserDTO;
+import com.vars.spring_boot.model.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+    private final int ADMIN_ROLE_ID;
+    private final int USER_ROLE_ID;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
+    public UserServiceImpl(@Value("${admin.role.id}") int admin_role_id, @Value("${user.role.id}") int user_role_id,
+                           UserRepository userRepository, RoleRepository roleRepository) {
+        ADMIN_ROLE_ID = admin_role_id;
+        USER_ROLE_ID = user_role_id;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public List<User> getUsers() {
-        return userDao.getUsers();
+        return userRepository.findAll();
     }
+
 
     @Override
     public User show(int id) {
-        return userDao.show(id);
+        return userRepository.findById(id).get();
     }
 
     @Override
-    public void save(UserDTO user) {
-        User newUser = new User();
-        newUser.setName(user.getName());
-        newUser.setPassword(user.getPassword());
-        newUser.setMail(user.getMail());
-        newUser.setRoles(user.getRoles());
-        userDao.save(newUser);
+    @Transactional
+    public User saveOrUpdate(UserDTO user) {
+        User newUser = new User(user);
+        setUserRoles(newUser, user.getAdmin());
+        return userRepository.save(newUser);
     }
 
     @Override
-    public void update(int id, UserDTO user) {
-        User newUser = new User();
-        newUser.setName(user.getName());
-        newUser.setPassword(user.getPassword());
-        newUser.setMail(user.getMail());
-        newUser.setRoles(user.getRoles());
-        userDao.update(id, newUser);
+    @Transactional
+    public boolean delete(int id) {
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void delete(int id) {
-        userDao.delete(id);
+    public List<UserDTO> getUserDTOS() {
+        return userRepository.findAll().stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userDao.findUserByMail(s);
+        return userRepository.findUserByMail(s);
     }
 
-    @Override
-    public void setAdminRole(UserDTO user) {
-        userDao.setAdminRole(user);
-    }
-
-    @Override
-    public void setUserRole(UserDTO user) {
-        userDao.setUserRole(user);
+    private void setUserRoles(User user, boolean isAdmin) {
+        if (isAdmin) {
+            Role roleById = roleRepository.findRoleById(ADMIN_ROLE_ID);
+            roleById.addUser(user);
+            user.addRole(roleById);
+        }
+        Role roleById = roleRepository.findRoleById(USER_ROLE_ID);
+        user.addRole(roleById);
+        roleById.addUser(user);
     }
 }

@@ -1,5 +1,6 @@
 package com.vars.spring_boot.model;
 
+import com.vars.spring_boot.model.dto.RoleDTO;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -25,6 +26,10 @@ public class Role implements GrantedAuthority {
     }
 
     public Role() {
+    }
+
+    public void addUser(User user) {
+        users.add(user);
     }
 
     public int getId() {

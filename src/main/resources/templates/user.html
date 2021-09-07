@@ -45,7 +45,7 @@
                         <h5 class="card-header"><b>About user</b></h5>
                         <div class="card-body">
                             <div class="container-fluid">
-                                <table class="table table-striped">
+                                <table id="info" class="table table-striped">
                                     <thead>
                                     <tr>
                                         <th scope="col">ID</th>
@@ -55,15 +55,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td th:text="${authInfo.id}"></td>
-                                        <td th:text="${authInfo.name}"></td>
-                                        <td th:text="${authInfo.mail}"></td>
-                                        <td><span th:each="role : ${authInfo.roles}">
-                                                <span th:text="${role.role}"></span>
-                                                </span>
-                                        </td>
-                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -74,8 +65,8 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+<script src="https://code.jquery.com/jquery-3.5.0.js"
+        integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -83,5 +74,28 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "rest/getAuth/",
+            dataType: 'json',
+            success: function (info) {
+                let userRoles = info.roles;
+                let roles = "";
+                for (let role of userRoles) {
+                    roles += " " + role.role;
+                }
+                let infoRow = '<tr>' +
+                    '<td>' + info.id + '</td>' +
+                    '<td>' + info.name + '</td>' +
+                    '<td>' + info.mail + '</td>' +
+                    '<td>' + roles + '</td>' +
+                    '</tr>';
+                $('#info tbody').append(infoRow);
+            }
+        });
+    });
+</script>
 </body>
 </html>

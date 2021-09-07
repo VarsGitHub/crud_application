@@ -1,5 +1,6 @@
 package com.vars.spring_boot.model;
 
+import com.vars.spring_boot.model.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,7 +18,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
@@ -35,6 +36,13 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     public User() {
+    }
+
+    public User (UserDTO user) {
+        id = user.getId();
+        name = user.getName();
+        password = user.getPassword();
+        mail = user.getMail();
     }
 
     public String getName() {
@@ -57,8 +65,12 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -73,7 +85,7 @@ public class User implements UserDetails {
         this.mail = mail;
     }
 
-    public void setRole(Role role) {
+    public void addRole(Role role) {
         roles.add(role);
     }
 
@@ -106,4 +118,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
