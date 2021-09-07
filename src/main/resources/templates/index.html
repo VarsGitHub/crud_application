@@ -105,7 +105,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="Nadmin"><b>Give admin role</b></label>
-                                            <input type="checkbox" checked class="form-control" id ="Nadmin">
+                                            <input type="checkbox" checked class="form-control" id="Nadmin">
                                         </div>
                                         <button type="submit" class="btn btn-success">Add user</button>
                                     </form>
@@ -218,7 +218,7 @@
                     </div>
                     <div class="form-group">
                         <label for="Uadmin"><b>Give admin role</b></label>
-                        <input type="checkbox" checked class="form-control" id ="Uadmin">
+                        <input type="checkbox" checked class="form-control" id="Uadmin">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -360,10 +360,14 @@
 </script>
 <script>
     $('#users-tab').on('shown.bs.tab', function (e) {
+        console.log("11");
+        console.log("22");
+
         $.ajax({
             type: "GET",
             url: "rest/table",
             success: function (result) {
+                $('#table tbody tr').remove();
                 $.each(result, function (i, user) {
                     let userRoles = user.roles;
                     let roles = "";
@@ -383,6 +387,7 @@
             }
         });
     })
+
 </script>
 <script>
     $('#users-tab').on('hide.bs.tab', function (e) {
